@@ -61,8 +61,6 @@
             <span classNames="pr-legend-item pr-legend-paid"
                   text="msg://com.company.money.entity/PaymentRequestStatus.PAID"/>
             <span classNames="pr-legend-item pr-legend-cancelled"
-                  text="msg://com.company.money.entity/PaymentRequestStatus.CANCELLED"/>
-            <span classNames="pr-legend-item pr-legend-cancelled"
                   text="msg://com.company.money.entity/PaymentRequestStatus.REJECTED"/>
         </hbox>
         <dataGrid id="paymentRequestsDataGrid" dataContainer="paymentRequestsDc" width="100%"
