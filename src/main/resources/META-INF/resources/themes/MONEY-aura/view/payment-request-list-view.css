@@ -1,0 +1,70 @@
+.pr-status-legend,
+.buttons-panel {
+    flex-wrap: wrap;
+}
+
+.pr-status-legend {
+    flex-wrap: wrap;
+    gap: 0.15rem 0.7rem;
+    padding: 0 0.15rem 0.2rem;
+    min-height: auto;
+}
+
+.pr-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--aura-font-size-xs);
+    line-height: var(--aura-line-height-xs);
+    color: var(--vaadin-text-color-secondary);
+}
+
+.pr-legend-item::before {
+    content: "";
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    border: 1px solid var(--vaadin-border-color);
+}
+
+.pr-legend-draft::before,
+vaadin-grid::part(pr-draft) {
+    background-color: transparent;
+}
+
+.pr-legend-submitted::before,
+vaadin-grid::part(pr-submitted) {
+    background-color: color-mix(in srgb, var(--aura-blue) 26%, transparent);
+}
+
+.pr-legend-deferred::before,
+vaadin-grid::part(pr-deferred) {
+    background-color: color-mix(in srgb, var(--aura-orange) 20%, transparent);
+}
+
+.pr-legend-approved::before,
+vaadin-grid::part(pr-approved) {
+    background-color: color-mix(in srgb, var(--aura-green) 14%, transparent);
+}
+
+.pr-legend-sent::before,
+vaadin-grid::part(pr-sent) {
+    background-color: color-mix(in srgb, var(--aura-yellow) 38%, transparent);
+}
+
+.pr-legend-paid::before,
+vaadin-grid::part(pr-paid) {
+    background-color: color-mix(in srgb, var(--aura-green) 28%, transparent);
+}
+
+.pr-legend-cancelled::before,
+vaadin-grid::part(pr-cancelled) {
+    background-color: color-mix(in srgb, var(--aura-red) 28%, transparent);
+}
+
+.pr-legend-missing::before,
+vaadin-grid::part(pr-missing-1c) {
+    background-color: color-mix(in srgb, var(--aura-purple) 36%, transparent);
+}

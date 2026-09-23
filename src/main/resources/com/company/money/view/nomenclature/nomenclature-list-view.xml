@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://nomenclatureListView.title"
+      focusComponent="nomenclaturesDataGrid">
+    <data>
+        <collection id="nomenclaturesDc" class="com.company.money.entity.Nomenclature">
+            <fetchPlan extends="_base"/>
+            <loader id="nomenclaturesDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from vshd1_Nomenclature e where e.deletionMark = false order by e.name]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <layout>
+        <genericFilter id="genericFilter" dataLoader="nomenclaturesDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel" width="100%" wrap="true">
+            <startSlot>
+                <button id="createButton" action="nomenclaturesDataGrid.createAction"/>
+                <button id="editButton" action="nomenclaturesDataGrid.editAction"/>
+                <button id="removeButton" action="nomenclaturesDataGrid.removeAction"/>
+            </startSlot>
+            <endSlot>
+                <simplePagination id="pagination" dataLoader="nomenclaturesDl"/>
+            </endSlot>
+        </hbox>
+        <dataGrid id="nomenclaturesDataGrid" dataContainer="nomenclaturesDc" width="100%"
+                  minHeight="20em" columnReorderingAllowed="true">
+            <actions>
+                <action id="createAction" type="list_create"/>
+                <action id="editAction" type="list_edit"/>
+                <action id="removeAction" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="name" autoWidth="true"/>
+                <column property="article" width="9rem"/>
+                <column property="code" width="8rem"/>
+                <column property="service" width="8rem"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectButton" action="selectAction"/>
+            <button id="discardButton" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

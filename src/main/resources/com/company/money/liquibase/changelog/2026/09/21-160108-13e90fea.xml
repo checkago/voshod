@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+        logicalFilePath="com/company/money/liquibase/changelog/2026/09/21-160108-13e90fea.xml">
+    <changeSet id="1" author="vshd1">
+        <dropForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST_FILE"
+                                  constraintName="FK_VSHD1_PAYMENT_REQUEST_FILE_ON_PAYMENT_REQUEST"/>
+    </changeSet>
+    <changeSet id="2" author="vshd1">
+        <addForeignKeyConstraint baseColumnNames="PAYMENT_REQUEST_ID" baseTableName="VSHD1_PAYMENT_REQUEST_FILE"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_FILE_ON_PAYMENT_REQUEST"
+                                 referencedColumnNames="ID" referencedTableName="VSHD1_PAYMENT_REQUEST"/>
+    </changeSet>
+</databaseChangeLog>

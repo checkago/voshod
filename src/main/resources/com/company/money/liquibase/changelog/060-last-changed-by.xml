@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        logicalFilePath="com/company/money/liquibase/changelog/060-last-changed-by.xml">
+
+    <changeSet id="1" author="MONEY">
+        <addColumn tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="LAST_CHANGED_BY_ID" type="${uuid.type}"/>
+        </addColumn>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_ON_LAST_CHANGED_BY"
+                     tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="LAST_CHANGED_BY_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST"
+                                 baseColumnNames="LAST_CHANGED_BY_ID"
+                                 referencedTableName="VSHD1_USER" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_ON_LAST_CHANGED_BY"/>
+    </changeSet>
+
+    <changeSet id="2" author="MONEY">
+        <update tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="LAST_CHANGED_BY_ID" valueComputed="APPLICANT_ID"/>
+        </update>
+    </changeSet>
+</databaseChangeLog>

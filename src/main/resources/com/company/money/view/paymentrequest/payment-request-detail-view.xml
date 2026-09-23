@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://paymentRequestDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="paymentRequestDc" class="com.company.money.entity.PaymentRequest">
+            <fetchPlan extends="_base">
+                <property name="applicant" fetchPlan="_instance_name"/>
+                <property name="lastChangedBy" fetchPlan="_instance_name"/>
+                <property name="counterparty" fetchPlan="_base"/>
+                <property name="nomenclature" fetchPlan="_base"/>
+                <property name="counterpartyBankAccount" fetchPlan="_base"/>
+                <property name="contract" fetchPlan="_base"/>
+                <property name="attachments" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="paymentRequestDl"/>
+            <collection id="attachmentsDc" property="attachments"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_save"/>
+        <action id="saveCloseAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <vbox id="headerBox" classNames="pr-header" width="100%">
+            <hbox id="headerRow1" classNames="pr-row" width="100%" alignItems="START">
+                <textField id="requestNumberField" property="requestNumber"
+                           dataContainer="paymentRequestDc"
+                           label="msg://com.company.money.entity/PaymentRequest.requestNumber"
+                           readOnly="true" width="100%"/>
+                <datePicker id="requestDateField" property="requestDate"
+                            dataContainer="paymentRequestDc"
+                            label="msg://com.company.money.entity/PaymentRequest.requestDate"
+                            readOnly="true" width="100%"/>
+                <entityPicker id="applicantField" property="applicant"
+                              dataContainer="paymentRequestDc"
+                              label="msg://com.company.money.entity/PaymentRequest.applicant"
+                              readOnly="true" width="100%"/>
+            </hbox>
+            <hbox id="headerRow2" classNames="pr-row" width="100%" alignItems="START">
+                <entityPicker id="lastChangedByField" property="lastChangedBy"
+                              dataContainer="paymentRequestDc"
+                              label="msg://com.company.money.entity/PaymentRequest.lastChangedBy"
+                              readOnly="true" width="100%"/>
+                <comboBox id="statusField" property="status"
+                          dataContainer="paymentRequestDc"
+                          label="msg://com.company.money.entity/PaymentRequest.status"
+                          readOnly="true" width="100%"/>
+                <textField id="oneCDocumentField" property="oneCDocumentTitle"
+                           dataContainer="paymentRequestDc"
+                           label="msg://com.company.money.entity/PaymentRequest.oneCDocumentTitle"
+                           readOnly="true" width="100%"/>
+            </hbox>
+            <hbox id="headerRow3" classNames="pr-row" width="100%" alignItems="START">
+                <datePicker id="deferredUntilField" property="deferredUntil"
+                            dataContainer="paymentRequestDc"
+                            label="msg://com.company.money.entity/PaymentRequest.deferredUntil"
+                            readOnly="true" width="100%"/>
+            </hbox>
+        </vbox>
+        <vbox id="form" classNames="pr-main" width="100%">
+            <hbox id="innLookupBox" classNames="pr-row pr-inn-row" width="100%" alignItems="START">
+                <textField id="innLookupField" label="msg://innLookupField.label"
+                           width="20em" maxLength="12"/>
+                <button id="fillByInnButton" text="msg://fillByInnButton.text" classNames="pr-inn-action"/>
+                <button id="checkCounterpartyButton" text="msg://checkCounterpartyButton.text"
+                        classNames="pr-inn-action"/>
+            </hbox>
+            <span id="fdMissingNotice" classNames="pr-missing-1c-notice" visible="false"
+                  text="msg://fdMissingCounterpartyNotice"/>
+            <hbox id="partyRow" classNames="pr-row" width="100%" alignItems="START">
+                <entityComboBox id="counterpartyField" property="counterparty"
+                                dataContainer="paymentRequestDc"
+                                label="msg://com.company.money.entity/PaymentRequest.counterparty"
+                                width="100%">
+                    <actions>
+                        <action id="entityClearAction" type="entity_clear"/>
+                    </actions>
+                </entityComboBox>
+                <entityComboBox id="bankAccountField" property="counterpartyBankAccount"
+                                dataContainer="paymentRequestDc"
+                                label="msg://com.company.money.entity/PaymentRequest.counterpartyBankAccount"
+                                width="100%">
+                    <actions>
+                        <action id="entityClearAction" type="entity_clear"/>
+                    </actions>
+                </entityComboBox>
+                <entityComboBox id="contractField" property="contract"
+                                dataContainer="paymentRequestDc"
+                                label="msg://com.company.money.entity/PaymentRequest.contract"
+                                width="100%">
+                    <actions>
+                        <action id="entityClearAction" type="entity_clear"/>
+                    </actions>
+                </entityComboBox>
+            </hbox>
+            <hbox id="paymentRow" classNames="pr-row" width="100%" alignItems="START">
+                <entityComboBox id="nomenclatureField" property="nomenclature"
+                                dataContainer="paymentRequestDc"
+                                label="msg://com.company.money.entity/PaymentRequest.nomenclature"
+                                width="100%">
+                    <actions>
+                        <action id="entityClearAction" type="entity_clear"/>
+                    </actions>
+                </entityComboBox>
+                <bigDecimalField id="amountField" property="amount"
+                                 dataContainer="paymentRequestDc"
+                                 label="msg://com.company.money.entity/PaymentRequest.amount"
+                                 width="100%"/>
+                <datePicker id="requestedPaymentDateField" property="requestedPaymentDate"
+                            dataContainer="paymentRequestDc"
+                            label="msg://com.company.money.entity/PaymentRequest.requestedPaymentDate"
+                            width="100%"/>
+                <datePicker id="approvedPaymentDateField" property="approvedPaymentDate"
+                            dataContainer="paymentRequestDc"
+                            label="msg://com.company.money.entity/PaymentRequest.approvedPaymentDate"
+                            width="100%"/>
+            </hbox>
+            <textArea id="purposeField" property="purpose"
+                      dataContainer="paymentRequestDc"
+                      label="msg://com.company.money.entity/PaymentRequest.purpose"
+                      width="100%"/>
+            <textArea id="cfoCommentField" property="cfoComment"
+                      dataContainer="paymentRequestDc"
+                      label="msg://com.company.money.entity/PaymentRequest.cfoComment"
+                      width="100%"/>
+        </vbox>
+        <fileStorageUploadField id="attachFileField"
+                                uploadText="msg://attachFileField.uploadText"
+                                fileNameVisible="false"
+                                clearButtonVisible="false"/>
+        <dataGrid id="attachmentsDataGrid" dataContainer="attachmentsDc" width="100%">
+            <actions>
+                <action id="removeAction" type="list_remove"/>
+            </actions>
+            <columns>
+                <column property="contentFile" autoWidth="true"/>
+                <column property="description" autoWidth="true"/>
+            </columns>
+        </dataGrid>
+        <hbox id="attachmentButtonsPanel" classNames="buttons-panel">
+            <button id="openAttachmentButton" text="msg://openAttachmentButton.text"/>
+            <button id="removeAttachmentButton" action="attachmentsDataGrid.removeAction"/>
+        </hbox>
+        <hbox id="workflowActions" classNames="buttons-panel">
+            <button id="submitButton" text="msg://submitButton.text"/>
+            <button id="cancelButton" text="msg://cancelButton.text"/>
+            <button id="approveButton" text="msg://approveButton.text"/>
+            <button id="rejectButton" text="msg://rejectButton.text"/>
+            <button id="deferButton" text="msg://deferButton.text"/>
+            <button id="exportButton" text="msg://exportButton.text"/>
+            <button id="returnButton" text="msg://returnButton.text"/>
+        </hbox>
+        <hbox id="detailActions">
+            <button id="saveButton" action="saveAction" text="msg://saveButton.text"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

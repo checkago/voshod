@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://paymentRequestListView.title"
+      focusComponent="paymentRequestsDataGrid">
+    <data>
+        <collection id="paymentRequestsDc" class="com.company.money.entity.PaymentRequest">
+            <fetchPlan extends="_base">
+                <property name="applicant" fetchPlan="_instance_name"/>
+                <property name="lastChangedBy" fetchPlan="_instance_name"/>
+                <property name="counterparty" fetchPlan="_instance_name"/>
+                <property name="nomenclature" fetchPlan="_instance_name"/>
+            </fetchPlan>
+            <loader id="paymentRequestsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from vshd1_PaymentRequest e order by e.requestDate desc, e.requestNumber desc]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <layout>
+        <hbox id="fdFilters" classNames="buttons-panel" width="100%" wrap="true" visible="false">
+            <comboBox id="applicantFilterField" label="msg://applicantFilter.label" clearButtonVisible="true"
+                      width="18rem"/>
+            <datePicker id="periodFromField" label="msg://periodFrom.label" clearButtonVisible="true"/>
+            <datePicker id="periodToField" label="msg://periodTo.label" clearButtonVisible="true"/>
+        </hbox>
+        <hbox id="buttonsPanel" classNames="buttons-panel" width="100%" wrap="true">
+            <startSlot>
+                <button id="createButton" action="paymentRequestsDataGrid.createAction"/>
+                <button id="editButton" action="paymentRequestsDataGrid.editAction"/>
+                <button id="removeButton" action="paymentRequestsDataGrid.removeAction"/>
+                <button id="approveButton" text="msg://approveButton.text" visible="false"/>
+                <button id="rejectButton" text="msg://rejectButton.text" visible="false"/>
+                <button id="deferButton" text="msg://deferButton.text" visible="false"/>
+                <button id="exportButton" text="msg://exportButton.text" visible="false"/>
+                <button id="returnButton" text="msg://returnButton.text" visible="false"/>
+            </startSlot>
+            <endSlot>
+                <simplePagination id="pagination" dataLoader="paymentRequestsDl"/>
+            </endSlot>
+        </hbox>
+        <hbox id="statusLegend" classNames="pr-status-legend" width="100%" alignItems="CENTER">
+            <span classNames="pr-legend-item pr-legend-missing"
+                  text="msg://statusLegend.missingInOneC"/>
+            <span classNames="pr-legend-item pr-legend-draft"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.DRAFT"/>
+            <span classNames="pr-legend-item pr-legend-submitted"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.SUBMITTED"/>
+            <span classNames="pr-legend-item pr-legend-deferred"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.DEFERRED"/>
+            <span classNames="pr-legend-item pr-legend-approved"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.APPROVED"/>
+            <span classNames="pr-legend-item pr-legend-sent"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.SENT_TO_1C"/>
+            <span classNames="pr-legend-item pr-legend-paid"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.PAID"/>
+            <span classNames="pr-legend-item pr-legend-cancelled"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.CANCELLED"/>
+            <span classNames="pr-legend-item pr-legend-cancelled"
+                  text="msg://com.company.money.entity/PaymentRequestStatus.REJECTED"/>
+        </hbox>
+        <dataGrid id="paymentRequestsDataGrid" dataContainer="paymentRequestsDc" width="100%"
+                  minHeight="20em" columnReorderingAllowed="true" editorBuffered="true">
+            <actions>
+                <action id="createAction" type="list_create"/>
+                <action id="editAction" type="list_edit"/>
+                <action id="removeAction" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="requestNumber" width="10rem"/>
+                <column property="requestDate" width="9rem"/>
+                <column property="status" width="10rem"/>
+                <column property="applicant" autoWidth="true"/>
+                <column property="lastChangedBy" autoWidth="true"/>
+                <column property="counterparty" autoWidth="true"/>
+                <column property="amount" width="9rem"/>
+                <column property="approvedPaymentDate" width="11rem" editable="true"/>
+                <column property="deferredUntil" width="11rem"/>
+                <column property="oneCDocumentTitle" width="16rem"/>
+                <editorActionsColumn key="editorActions" width="9rem" flexGrow="0" visible="false">
+                    <editButton icon="PENCIL" themeNames="icon"/>
+                    <saveButton icon="CHECK" themeNames="icon success"/>
+                    <cancelButton icon="CLOSE" themeNames="icon error"/>
+                </editorActionsColumn>
+            </columns>
+        </dataGrid>
+    </layout>
+</view>

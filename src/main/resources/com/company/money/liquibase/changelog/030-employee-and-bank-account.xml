@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        logicalFilePath="com/company/money/liquibase/changelog/030-employee-and-bank-account.xml">
+
+    <changeSet id="1" author="MONEY">
+        <addColumn tableName="VSHD1_USER">
+            <column name="ONE_C_EMPLOYEE_REF" type="${uuid.type}"/>
+            <column name="EMPLOYEE_FULL_NAME" type="varchar(100)"/>
+            <column name="EMPLOYEE_CODE" type="varchar(10)"/>
+        </addColumn>
+        <createIndex indexName="IDX_VSHD1_USER_ON_ONE_C_EMPLOYEE" tableName="VSHD1_USER">
+            <column name="ONE_C_EMPLOYEE_REF"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2" author="MONEY">
+        <createTable tableName="VSHD1_COUNTERPARTY_BANK_ACCOUNT">
+            <column name="ID" type="${uuid.type}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VSHD1_COUNTERPARTY_BANK_ACCOUNT"/>
+            </column>
+            <column name="VERSION" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ONE_C_REF" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTERPARTY_ID" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODE" type="varchar(9)"/>
+            <column name="NAME" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCOUNT_NUMBER" type="varchar(70)"/>
+        </createTable>
+        <createIndex indexName="IDX_VSHD1_COUNTERPARTY_BANK_ACCOUNT_ON_ONE_C_REF"
+                     tableName="VSHD1_COUNTERPARTY_BANK_ACCOUNT" unique="true">
+            <column name="ONE_C_REF"/>
+        </createIndex>
+        <createIndex indexName="IDX_VSHD1_COUNTERPARTY_BANK_ACCOUNT_ON_COUNTERPARTY"
+                     tableName="VSHD1_COUNTERPARTY_BANK_ACCOUNT">
+            <column name="COUNTERPARTY_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_COUNTERPARTY_BANK_ACCOUNT"
+                                 baseColumnNames="COUNTERPARTY_ID"
+                                 referencedTableName="VSHD1_COUNTERPARTY" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_COUNTERPARTY_BANK_ACCOUNT_ON_COUNTERPARTY"/>
+    </changeSet>
+
+    <changeSet id="3" author="MONEY">
+        <addColumn tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="COUNTERPARTY_BANK_ACCOUNT_ID" type="${uuid.type}"/>
+        </addColumn>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_ON_BANK_ACCOUNT" tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="COUNTERPARTY_BANK_ACCOUNT_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST"
+                                 baseColumnNames="COUNTERPARTY_BANK_ACCOUNT_ID"
+                                 referencedTableName="VSHD1_COUNTERPARTY_BANK_ACCOUNT" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_ON_BANK_ACCOUNT"/>
+    </changeSet>
+</databaseChangeLog>

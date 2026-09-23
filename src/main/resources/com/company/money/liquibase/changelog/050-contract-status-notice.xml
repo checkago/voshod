@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        logicalFilePath="com/company/money/liquibase/changelog/050-contract-status-notice.xml">
+
+    <changeSet id="1" author="MONEY">
+        <createTable tableName="VSHD1_COUNTERPARTY_CONTRACT">
+            <column name="ID" type="${uuid.type}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VSHD1_COUNTERPARTY_CONTRACT"/>
+            </column>
+            <column name="VERSION" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ONE_C_REF" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTERPARTY_ID" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODE" type="varchar(9)"/>
+            <column name="NAME" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTRACT_KIND" type="varchar(50)"/>
+            <column name="VAT_RATE" type="varchar(50)"/>
+            <column name="AMOUNT_INCLUDES_VAT" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CURRENCY_KEY" type="${uuid.type}"/>
+        </createTable>
+        <createIndex indexName="IDX_VSHD1_COUNTERPARTY_CONTRACT_ON_ONE_C_REF"
+                     tableName="VSHD1_COUNTERPARTY_CONTRACT" unique="true">
+            <column name="ONE_C_REF"/>
+        </createIndex>
+        <createIndex indexName="IDX_VSHD1_COUNTERPARTY_CONTRACT_ON_COUNTERPARTY"
+                     tableName="VSHD1_COUNTERPARTY_CONTRACT">
+            <column name="COUNTERPARTY_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_COUNTERPARTY_CONTRACT"
+                                 baseColumnNames="COUNTERPARTY_ID"
+                                 referencedTableName="VSHD1_COUNTERPARTY" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_COUNTERPARTY_CONTRACT_ON_COUNTERPARTY"/>
+    </changeSet>
+
+    <changeSet id="2" author="MONEY">
+        <addColumn tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="CONTRACT_ID" type="${uuid.type}"/>
+            <column name="ONE_C_DOCUMENT_NUMBER" type="varchar(30)"/>
+            <column name="ONE_C_DOCUMENT_DATE" type="date"/>
+        </addColumn>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_ON_CONTRACT" tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="CONTRACT_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST"
+                                 baseColumnNames="CONTRACT_ID"
+                                 referencedTableName="VSHD1_COUNTERPARTY_CONTRACT" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_ON_CONTRACT"/>
+    </changeSet>
+
+    <changeSet id="3" author="MONEY">
+        <createTable tableName="VSHD1_PAYMENT_REQUEST_NOTICE">
+            <column name="ID" type="${uuid.type}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VSHD1_PAYMENT_REQUEST_NOTICE"/>
+            </column>
+            <column name="VERSION" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PAYMENT_REQUEST_ID" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RECIPIENT_ID" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSAGE_TEXT" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="READ_FLAG" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_NOTICE_ON_REQUEST"
+                     tableName="VSHD1_PAYMENT_REQUEST_NOTICE">
+            <column name="PAYMENT_REQUEST_ID"/>
+        </createIndex>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_NOTICE_ON_RECIPIENT"
+                     tableName="VSHD1_PAYMENT_REQUEST_NOTICE">
+            <column name="RECIPIENT_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST_NOTICE"
+                                 baseColumnNames="PAYMENT_REQUEST_ID"
+                                 referencedTableName="VSHD1_PAYMENT_REQUEST" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_NOTICE_ON_REQUEST"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST_NOTICE"
+                                 baseColumnNames="RECIPIENT_ID"
+                                 referencedTableName="VSHD1_USER" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_NOTICE_ON_RECIPIENT"/>
+    </changeSet>
+</databaseChangeLog>

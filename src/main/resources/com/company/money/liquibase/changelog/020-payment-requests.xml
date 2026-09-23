@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        logicalFilePath="com/company/money/liquibase/changelog/020-payment-requests.xml">
+
+    <changeSet id="1" author="MONEY">
+        <createTable tableName="VSHD1_COUNTERPARTY">
+            <column name="ID" type="${uuid.type}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VSHD1_COUNTERPARTY"/>
+            </column>
+            <column name="VERSION" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ONE_C_REF" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODE" type="varchar(9)"/>
+            <column name="NAME" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FULL_NAME" type="varchar(1000)"/>
+            <column name="INN" type="varchar(50)"/>
+            <column name="KPP" type="varchar(9)"/>
+            <column name="FOLDER" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETION_MARK" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="IDX_VSHD1_COUNTERPARTY_ON_ONE_C_REF" tableName="VSHD1_COUNTERPARTY" unique="true">
+            <column name="ONE_C_REF"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2" author="MONEY">
+        <createTable tableName="VSHD1_NOMENCLATURE">
+            <column name="ID" type="${uuid.type}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VSHD1_NOMENCLATURE"/>
+            </column>
+            <column name="VERSION" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ONE_C_REF" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODE" type="varchar(11)"/>
+            <column name="NAME" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ARTICLE" type="varchar(50)"/>
+            <column name="SERVICE" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FOLDER" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETION_MARK" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="IDX_VSHD1_NOMENCLATURE_ON_ONE_C_REF" tableName="VSHD1_NOMENCLATURE" unique="true">
+            <column name="ONE_C_REF"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="3" author="MONEY">
+        <createTable tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="ID" type="${uuid.type}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VSHD1_PAYMENT_REQUEST"/>
+            </column>
+            <column name="VERSION" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REQUEST_NUMBER" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REQUEST_DATE" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APPLICANT_ID" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTERPARTY_ID" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NOMENCLATURE_ID" type="${uuid.type}"/>
+            <column name="AMOUNT" type="decimal(15,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PURPOSE" type="varchar(210)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REQUESTED_PAYMENT_DATE" type="date"/>
+            <column name="APPROVED_PAYMENT_DATE" type="date"/>
+            <column name="CFO_COMMENT" type="varchar(500)"/>
+            <column name="ONE_C_DOCUMENT_REF" type="varchar(36)"/>
+            <column name="ONE_C_EXPORT_PAYLOAD" type="clob"/>
+        </createTable>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_ON_NUMBER" tableName="VSHD1_PAYMENT_REQUEST" unique="true">
+            <column name="REQUEST_NUMBER"/>
+        </createIndex>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_ON_APPLICANT" tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="APPLICANT_ID"/>
+        </createIndex>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_ON_COUNTERPARTY" tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="COUNTERPARTY_ID"/>
+        </createIndex>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_ON_NOMENCLATURE" tableName="VSHD1_PAYMENT_REQUEST">
+            <column name="NOMENCLATURE_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST" baseColumnNames="APPLICANT_ID"
+                                 referencedTableName="VSHD1_USER" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_ON_APPLICANT"/>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST" baseColumnNames="COUNTERPARTY_ID"
+                                 referencedTableName="VSHD1_COUNTERPARTY" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_ON_COUNTERPARTY"/>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST" baseColumnNames="NOMENCLATURE_ID"
+                                 referencedTableName="VSHD1_NOMENCLATURE" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_ON_NOMENCLATURE"/>
+    </changeSet>
+
+    <changeSet id="4" author="MONEY">
+        <createTable tableName="VSHD1_PAYMENT_REQUEST_FILE">
+            <column name="ID" type="${uuid.type}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VSHD1_PAYMENT_REQUEST_FILE"/>
+            </column>
+            <column name="VERSION" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PAYMENT_REQUEST_ID" type="${uuid.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTENT_FILE" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)"/>
+        </createTable>
+        <createIndex indexName="IDX_VSHD1_PAYMENT_REQUEST_FILE_ON_REQUEST" tableName="VSHD1_PAYMENT_REQUEST_FILE">
+            <column name="PAYMENT_REQUEST_ID"/>
+        </createIndex>
+        <addForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST_FILE" baseColumnNames="PAYMENT_REQUEST_ID"
+                                 referencedTableName="VSHD1_PAYMENT_REQUEST" referencedColumnNames="ID"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_FILE_ON_REQUEST"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

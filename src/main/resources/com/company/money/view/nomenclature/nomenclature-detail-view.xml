@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://nomenclatureDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="nomenclatureDc" class="com.company.money.entity.Nomenclature">
+            <fetchPlan extends="_base"/>
+            <loader id="nomenclatureDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveCloseAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="nomenclatureDc">
+            <textField id="nameField" property="name"/>
+            <textField id="articleField" property="article"/>
+            <textField id="codeField" property="code"/>
+            <checkbox id="serviceField" property="service" required="false"/>
+            <checkbox id="folderField" property="folder" required="false"/>
+            <checkbox id="deletionMarkField" property="deletionMark" required="false"/>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveCloseAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS"
+        logicalFilePath="com/company/money/liquibase/changelog/2026/09/22-141121-13e90fea.xml">
+    <changeSet id="1" author="vshd1">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="FK_VSHD1_PAYMENT_REQUEST_NOTICE_ON_REQUEST"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="VSHD1_PAYMENT_REQUEST_NOTICE"
+                                  constraintName="FK_VSHD1_PAYMENT_REQUEST_NOTICE_ON_REQUEST"/>
+    </changeSet>
+    <changeSet id="2" author="vshd1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FK_VSHD1_PAYMENT_REQUEST_NOTICE_ON_PAYMENT_REQUEST"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="PAYMENT_REQUEST_ID"
+                                 baseTableName="VSHD1_PAYMENT_REQUEST_NOTICE"
+                                 constraintName="FK_VSHD1_PAYMENT_REQUEST_NOTICE_ON_PAYMENT_REQUEST"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="VSHD1_PAYMENT_REQUEST"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

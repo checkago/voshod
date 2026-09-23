@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/flowui/menu">
+
+    <menu id="budgeting" title="msg://com.company.money/menu.budgeting.title" opened="true">
+        <item view="vshd1_PaymentRequest.list"
+              title="msg://com.company.money.view.paymentrequest/paymentRequestListView.title"/>
+    </menu>
+
+    <menu id="application" title="msg://com.company.money/menu.application.title">
+        <item view="vshd1_User.list" title="msg://com.company.money.view.user/UserListView.title"/>
+    </menu>
+
+</menu-config>

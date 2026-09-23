@@ -1,0 +1,37 @@
+.pr-header {
+    background-color: var(--aura-surface-color);
+    border: 1px solid var(--vaadin-border-color);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    gap: 1rem;
+}
+
+.pr-main {
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pr-row {
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.pr-row > * {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.pr-inn-row .pr-inn-action {
+    flex: 0 0 auto;
+    margin-top: 1.75rem;
+}
+
+.pr-missing-1c-field {
+    --vaadin-input-field-background: color-mix(in srgb, var(--aura-orange) 28%, transparent);
+}
+
+.pr-missing-1c-notice {
+    color: var(--aura-orange-text);
+    font-weight: var(--aura-font-weight-medium);
+}

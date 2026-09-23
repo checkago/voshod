@@ -1,0 +1,17 @@
+.agents
+.cursor
+.git
+.github
+.gradle
+.idea
+.jmix
+.skills
+build
+node_modules
+src/main/bundles
+src/main/frontend/generated
+application-local.properties
+.env
+*.iml
+README.md
+AGENTS.md
